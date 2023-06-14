@@ -5,4 +5,4 @@ class ProfileEditSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserModel
-        fields=fields = ['name','email','bio','file_upload']
+        fields=fields = ['name','email','bio','profile_picture']
