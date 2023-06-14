@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from django.contrib.auth import authenticate
-
+import re
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import check_password
@@ -14,6 +14,10 @@ def UserSignupView(request):
    if request.method == 'POST': 
         email=request.data['email']
         password=request.data['password']
+        # Check if email is in the proper format
+        email_pattern = re.compile(r'^[\w\.-]+@[\w\.-]+\.\w+$')
+        if not email_pattern.match(email):
+            return Response({"message": "Invalid email format"}, status=status.HTTP_400_BAD_REQUEST)
         user_email=UserModel.objects.filter(email=email)
         if user_email.exists():
             return Response({"messege":"You are already Registered"},status=status.HTTP_400_BAD_REQUEST)
